@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback, useMemo} from "react";
 
 function App (){
 
@@ -28,10 +28,12 @@ function App (){
     }
   },[])
 
-  function handleAdd(){
+    const handleAdd = useCallback(()=>{
     setChamada([...chamada, input]);
     setInput("");
-  }
+  },[input,chamada]);
+
+  const totalChamadas = useMemo(() => chamada.length,[chamada]);
 
   return(
     <>
@@ -42,18 +44,24 @@ function App (){
       {chamada.map((aluno)=>(<li key = {aluno}>{aluno}</li>))};
 
     </ul>
+    <br/>
+
+    <strong>Você tem {totalChamadas} alunos </strong>
 
     <input
     type="text"
     value={input}
     onChange={(e)=> setInput(e.target.value)}/>
-  )
+  
 
-  <button type onClick={handleAdd}>
-    Adicionar
-  </button>
-  </>
+    <button type onClick={handleAdd}>
+      Adicionar
+    </button>
+    </>
+
   );
+  
+  
 
 }
 
